@@ -1,3 +1,4 @@
+language: python
 env:
    global:
      - CONAN_USERNAME: "symbioticlab" # ADJUST WITH YOUR REFERENCE USERNAME!
@@ -7,17 +8,16 @@ env:
      - CONAN_STABLE_BRANCH_PATTERN: "master"
      - CONAN_UPLOAD_ONLY_WHEN_STABLE: 1 # Will only upload when the branch matches "release/*"
 
-linux: &linux
+.linux: &linux
    os: linux
-   sudo: required
    language: python
    python: "3.7"
    services:
      - docker
-osx: &osx
+.osx: &osx
    os: osx
    language: generic
-matrix:
+jobs:
    include:
 
       - <<: *linux
