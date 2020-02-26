@@ -13,14 +13,7 @@ class GperftoolsConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     short_paths = True
 
-    exports_sources = 'src/FindGperftools.cmake'
-
-    options = {
-        "shared": [True, False]
-    }
-    default_options = {
-        "shared": True
-    }
+    exports_sources = 'src/*'
 
     @property
     def _source_subfolder(self):
@@ -38,9 +31,9 @@ class GperftoolsConan(ConanFile):
     def _configure_autotools(self):
         if not self._autotools:
             self._autotools = AutoToolsBuildEnvironment(self, win_bash=tools.os_info.is_windows)
-            self._autotools.fpic = True
+            args = ['--disable-static', '--enable-shared']
             with tools.chdir(self._source_subfolder):
-                self._autotools.configure()
+                self._autotools.configure(args=args)
 
         return self._autotools
 
@@ -53,8 +46,9 @@ class GperftoolsConan(ConanFile):
         autotools = self._configure_autotools()
         with tools.chdir(self._source_subfolder):
             autotools.install()
-        self.copy("*.cmake", src="src", dst="cmake")
+        self.copy("*.cmake", src="src")
+        with tools.chdir(os.path.join(self.package_folder, "lib")):
+            self.run("rm -f *.la")
 
     def package_info(self):
         self.cpp_info.name = self.name
-        self.cpp_info.builddirs.append('cmake')

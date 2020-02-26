@@ -1,11 +1,6 @@
-# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
-# file Copyright.txt or https://cmake.org/licensing for details.
-
 #.rst:
-# FindGperftools
+# Config file for Gperftools
 # -------
-#
-# Finds the gperftools library
 #
 # This will define the following variables::
 #
@@ -22,13 +17,18 @@
 #   gperftools::tcmalloc_and_profiler     - The tcmalloc_and_profiler library
 #
 
+# assume the file is in lib/cmake/gperftools/GperftoolsConfig.cmake
+get_filename_component(Gperftools_PKGCONFIG_DIR "${CMAKE_CURRENT_LIST_DIR}/../../pkgconfig" ABSOLUTE)
+
 find_package(PkgConfig)
+set(ENV{PKG_CONFIG_PATH} ${Gperftools_PKGCONFIG_DIR})
+set(ENV{PKG_CONFIG_LIBDIR} ${Gperftools_PKGCONFIG_DIR})
+
 pkg_check_modules(PC_profiler QUIET libprofiler)
 pkg_check_modules(PC_tcmalloc QUIET libtcmalloc)
 pkg_check_modules(PC_tcmalloc_debug QUIET libtcmalloc_debug)
 pkg_check_modules(PC_tcmalloc_minimal QUIET libtcmalloc)
 pkg_check_modules(PC_tcmalloc_minimal_debug QUIET libtcmalloc_debug)
-
 
 # Find libprofiler
 find_path(profiler_INCLUDE_DIR

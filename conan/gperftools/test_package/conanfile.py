@@ -5,7 +5,7 @@ from conans import ConanFile, CMake, tools
 
 class GperftoolsTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake_paths"
+    generators = "cmake"
 
     def build(self):
         cmake = CMake(self)
@@ -16,4 +16,5 @@ class GperftoolsTestConan(ConanFile):
 
     def test(self):
         if not tools.cross_building(self.settings):
-            self.run(".%sexample" % os.sep)
+            bin_path = os.path.abspath(os.path.join("bin", "example"))
+            self.run(bin_path, run_environment=True)
