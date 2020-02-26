@@ -12,6 +12,7 @@ class ProtobufConan(ConanFile):
     homepage = "https://github.com/protocolbuffers/protobuf"
     license = "BSD-3-Clause"
     exports_sources = ["CMakeLists.txt", "protobuf.patch"]
+    generators = 'cmake'
     short_paths = True
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "with_zlib": [True, False], "fPIC": [True, False]}
