@@ -1,4 +1,4 @@
-conan/*/test_package/build
+**/test_package/build
 .vscode
 *.pyc
-__pycache__
+**/__pycache__

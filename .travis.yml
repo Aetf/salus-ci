@@ -1,38 +1,74 @@
 language: python
+
 env:
-   global:
-     - CONAN_USERNAME: "symbioticlab" # ADJUST WITH YOUR REFERENCE USERNAME!
-     - CONAN_LOGIN_USERNAME: "peifeng" # ADJUST WITH YOUR LOGIN USERNAME!
-     - CONAN_CHANNEL: "salus-conan" # ADJUST WITH YOUR CHANNEL!
-     - CONAN_UPLOAD: "https://api.bintray.com/conan/symbioticlab/salus-conan" # ADJUST WITH YOUR REMOTE!
-     - CONAN_STABLE_BRANCH_PATTERN: "master"
-     - CONAN_UPLOAD_ONLY_WHEN_STABLE: 1 # Will only upload when the branch matches "release/*"
+  global:
+    # for conan packages uploads
+    - CONAN_USERNAME="symbioticlab"
+    - CONAN_LOGIN_USERNAME="peifeng"
+    - CONAN_CHANNEL="salus-conan"
+    - CONAN_UPLOAD="https://api.bintray.com/conan/symbioticlab/salus-conan" # ADJUST WITH YOUR REMOTE!
+    - CONAN_STABLE_BRANCH_PATTERN="master"
+    - CONAN_UPLOAD_ONLY_WHEN_STABLE="1"
+    - CONAN_BUILD_TYPE="Release"
+    - CONAN_ARCHS="x86_64"
+    - CONAN_PIP_USE_SUDO="0"
+    # for conan builder docker pushes
+    - DOCKER_UPLOAD="1"
+    - DOCKER_REGISTRY="registry.gitlab.com"
+    - DOCKER_USERNAME="salus/salus/builder"
 
 .linux: &linux
-   os: linux
-   language: python
-   python: "3.7"
-   services:
-     - docker
-.osx: &osx
-   os: osx
-   language: generic
+  os: linux
+  language: python
+  python: "3.7"
+  services:
+    - docker
+
+.pkg-linux: &pkg-linux
+  <<: *linux
+  script:
+    - chmod +x .ci/package-run.sh
+    - ./.ci/package-run.sh
+
+.docker-linux: &docker-linux
+  <<: *linux
+  script:
+    - chmod +x ./.ci/docker-run.sh
+    - ./.ci/docker-run.sh
+
 jobs:
    include:
-
-      - <<: *linux
-        env: CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48
-      - <<: *linux
+      - <<: *pkg-linux
+        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc5-ppc64le
+      - <<: *pkg-linux
+        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc6-ppc64le
+      - <<: *pkg-linux
+        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc7-ppc64le
+      - <<: *pkg-linux
+        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc8-ppc64le
+      - <<: *pkg-linux
+        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9-ppc64le
+      - <<: *pkg-linux
+        env: CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
+      - <<: *pkg-linux
+        env: CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=conanio/gcc6
+      - <<: *pkg-linux
         env: CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=conanio/gcc7
-      - <<: *linux
+      - <<: *pkg-linux
         env: CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=conanio/gcc8
-      - <<: *linux
+      - <<: *pkg-linux
         env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+      - <<: *docker-linux
+        env: GCC_VERSIONS=5 DOCKER_ARCHS=ppc64le
+      - <<: *docker-linux
+        env: GCC_VERSIONS=6 DOCKER_ARCHS=ppc64le
+      - <<: *docker-linux
+        env: GCC_VERSIONS=7 DOCKER_ARCHS=ppc64le
+      - <<: *docker-linux
+        env: GCC_VERSIONS=8 DOCKER_ARCHS=ppc64le
+      - <<: *docker-linux
+        env: GCC_VERSIONS=9 DOCKER_ARCHS=ppc64le
 
 install:
   - chmod +x .ci/install.sh
   - ./.ci/install.sh
-
-script:
-  - chmod +x .ci/run.sh
-  - ./.ci/run.sh

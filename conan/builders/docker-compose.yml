@@ -1,0 +1,56 @@
+version: '3.2'
+services:
+    gcc5-ppc64le:
+        build:
+            context: gcc_5-ppc64le
+            dockerfile: Dockerfile
+            cache_from:
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc5-ppc64le:${DOCKER_BUILD_TAG}"
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc5-ppc64le"
+        image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc5-ppc64le:${DOCKER_BUILD_TAG}"
+        container_name: gcc5-ppc64le
+        tty: true
+
+    gcc6-ppc64le:
+        build:
+            context: gcc_6-ppc64le
+            dockerfile: Dockerfile
+            cache_from:
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc6-ppc64le:${DOCKER_BUILD_TAG}"
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc6-ppc64le"
+        image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc6-ppc64le:${DOCKER_BUILD_TAG}"
+        container_name: gcc6-ppc64le
+        tty: true
+
+    gcc7-ppc64le:
+        build:
+            context: gcc_7-ppc64le
+            dockerfile: Dockerfile
+            cache_from:
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc7-ppc64le:${DOCKER_BUILD_TAG}"
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc7-ppc64le"
+        image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc7-ppc64le:${DOCKER_BUILD_TAG}"
+        container_name: gcc7-ppc64le
+        tty: true
+
+    gcc8-ppc64le:
+        build:
+            context: gcc_8-ppc64le
+            dockerfile: Dockerfile
+            cache_from:
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc8-ppc64le:${DOCKER_BUILD_TAG}"
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc8-ppc64le"
+        image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc8-ppc64le:${DOCKER_BUILD_TAG}"
+        container_name: gcc8-ppc64le
+        tty: true
+
+    gcc9-ppc64le:
+        build:
+            context: gcc_9-ppc64le
+            dockerfile: Dockerfile
+            cache_from:
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9-ppc64le:${DOCKER_BUILD_TAG}"
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9-ppc64le"
+        image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9-ppc64le:${DOCKER_BUILD_TAG}"
+        container_name: gcc9-ppc64le
+        tty: true

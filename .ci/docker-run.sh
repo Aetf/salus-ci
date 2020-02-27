@@ -10,8 +10,7 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     pyenv activate conan
 fi
 
-for pkg in conan/*; do
-    pushd $pkg
-    python build.py
-    popd
-done
+pushd conan/builders
+pip install docker-compose humanfriendly
+python build.py
+popd
