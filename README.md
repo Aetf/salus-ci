@@ -20,4 +20,15 @@ and replace `<REMOTE>` with a name that identifies the repository (for example: 
 - protobuf (adapted from [conan-center-index](https://github.com/conan-io/conan-center-index))
 - gperftools
 
+## Conan builder images
+
+This repo provides additional `ppc64le` architecture builder dockerfiles that can be used alongside
+[official images](https://github.com/conan-io/conan-docker-tools).
+Prebuilt images are available at [Salus's container
+registry](https://gitlab.com/Salus/Salus/container_registry
+).
+
+See this repo's config for how to use them
+with `conan-package-tools`.
+
 [travis-ci]: https://travis-ci.com/Aetf/salus-ci
