@@ -11,12 +11,12 @@ class ProtobufConan(ConanFile):
     url = "https://github.com/Aetf/salus-ci"
     homepage = "https://github.com/protocolbuffers/protobuf"
     license = "BSD-3-Clause"
-    exports_sources = ["CMakeLists.txt", "protobuf.patch"]
+    exports_sources = ["CMakeLists.txt", "patches/protoc-option.patch"]
     generators = 'cmake'
     short_paths = True
     settings = "os", "arch", "compiler", "build_type"
-    options = {"shared": [True, False], "with_zlib": [True, False], "fPIC": [True, False]}
-    default_options = {"with_zlib": False, "shared": False, "fPIC": True}
+    options = {"shared": [True, False], "with_zlib": [True, False], "fPIC": [True, False], "protoc": [True, False]}
+    default_options = {"with_zlib": False, "shared": False, "fPIC": True, "protoc": True}
     version = "3.4.1"
 
     @property
@@ -35,8 +35,12 @@ class ProtobufConan(ConanFile):
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
+        tools.patch(base_path=self._source_subfolder, patch_file="patches/protoc-option.patch")
 
     def configure(self):
+        if tools.cross_building(self.settings):
+            self.options.protoc = False
+
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
             del self.options.fPIC
             compiler_version = Version(self.settings.compiler.version.value)
@@ -52,6 +56,8 @@ class ProtobufConan(ConanFile):
         cmake = CMake(self)
         cmake.definitions["protobuf_BUILD_TESTS"] = False
         cmake.definitions["protobuf_WITH_ZLIB"] = self.options.with_zlib
+        cmake.definitions["protobuf_BUILD_PROTOC"] = self.options.protoc
+        cmake.definitions["protobuf_BUILD_LIBPROTOC"] = self.options.protoc
         if self.settings.compiler == "Visual Studio":
             cmake.definitions["protobuf_MSVC_STATIC_RUNTIME"] = "MT" in self.settings.compiler.runtime
         cmake.configure(build_folder=self._build_subfolder)

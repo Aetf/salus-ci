@@ -1,5 +1,7 @@
 # Salus CI Supporting
 
+[![Build Status](https://travis-ci.com/Aetf/salus-ci.svg?branch=master)](travis-ci)
+
 Various supporting libraries and scripts for [Salus](https://github.com/SymbioticLab/Salus).
 
 ## Conan repository
@@ -17,3 +19,5 @@ and replace `<REMOTE>` with a name that identifies the repository (for example: 
 
 - protobuf (adapted from [conan-center-index](https://github.com/conan-io/conan-center-index))
 - gperftools
+
+[travis-ci]: https://travis-ci.com/Aetf/salus-ci

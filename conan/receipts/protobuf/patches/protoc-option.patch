@@ -1,0 +1,118 @@
+From 038f017524ca0dd24f9c0f7f67d443e5b5c12838 Mon Sep 17 00:00:00 2001
+From: Konstantin Podsvirov <konstantin@podsvirov.pro>
+Date: Wed, 19 Apr 2017 16:25:52 +0300
+Subject: [PATCH] CMake: Android crosscompiling
+
+Added protobuf_BUILD_PROTOC and protobuf_BUILD_LIBPROTOC
+advanced options.
+For Android system by default we only build libprotobuf-lite
+and libprotobuf.
+---
+ cmake/CMakeLists.txt | 21 +++++++++++++++++----
+ cmake/install.cmake  | 27 +++++++++++++++++++++------
+ 2 files changed, 38 insertions(+), 10 deletions(-)
+
+diff --git a/cmake/CMakeLists.txt b/cmake/CMakeLists.txt
+index 7618ba21a1..32c5e0593f 100644
+--- a/cmake/CMakeLists.txt
++++ b/cmake/CMakeLists.txt
+@@ -11,8 +11,18 @@ cmake_policy(SET CMP0022 NEW)
+ # Project
+ project(protobuf C CXX)
+ 
++# Auxiliary modules
++include(CMakeDependentOption)
++
+ # Options
+-option(protobuf_BUILD_TESTS "Build tests" ON)
++cmake_dependent_option(protobuf_BUILD_TESTS "Build tests" ON
++  "NOT CMAKE_CROSSCOMPILING" OFF)
++cmake_dependent_option(protobuf_BUILD_PROTOC "Build protoc compiler" ON
++  "NOT CMAKE_SYSTEM_NAME MATCHES Android" OFF)
++mark_as_advanced(protobuf_BUILD_PROTOC)
++cmake_dependent_option(protobuf_BUILD_LIBPROTOC "Build libprotoc" ON
++  "protobuf_BUILD_PROTOC" OFF)
++mark_as_advanced(protobuf_BUILD_LIBPROTOC)
+ option(protobuf_BUILD_EXAMPLES "Build examples" OFF)
+ if (BUILD_SHARED_LIBS)
+   set(protobuf_BUILD_SHARED_LIBS_DEFAULT ON)
+@@ -20,7 +30,6 @@ else (BUILD_SHARED_LIBS)
+   set(protobuf_BUILD_SHARED_LIBS_DEFAULT OFF)
+ endif (BUILD_SHARED_LIBS)
+ option(protobuf_BUILD_SHARED_LIBS "Build Shared Libraries" ${protobuf_BUILD_SHARED_LIBS_DEFAULT})
+-include(CMakeDependentOption)
+ cmake_dependent_option(protobuf_MSVC_STATIC_RUNTIME "Link static runtime libraries" ON
+   "NOT protobuf_BUILD_SHARED_LIBS" OFF)
+ if (MSVC)
+@@ -165,8 +174,12 @@ endif (protobuf_UNICODE)
+ 
+ include(libprotobuf-lite.cmake)
+ include(libprotobuf.cmake)
+-include(libprotoc.cmake)
+-include(protoc.cmake)
++if(protobuf_BUILD_LIBPROTOC)
++  include(libprotoc.cmake)
++  if(protobuf_BUILD_PROTOC)
++    include(protoc.cmake)
++  endif()
++endif()
+ 
+ if (protobuf_BUILD_TESTS)
+   include(tests.cmake)
+diff --git a/cmake/install.cmake b/cmake/install.cmake
+index 441bf55..dcdfb12 100644
+--- a/cmake/install.cmake
++++ b/cmake/install.cmake
+@@ -5,10 +5,13 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/protobuf.pc.cmake
+ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/protobuf-lite.pc.cmake
+                ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc @ONLY)
+ 
+-foreach(_library
++set(_libraries
+   libprotobuf-lite
+-  libprotobuf
+-  libprotoc)
++  libprotobuf)
++if(TARGET libprotoc)
++  list(APPEND _libraries libprotoc)
++endif()
++foreach(_library ${_libraries})
+   set_property(TARGET ${_library}
+     PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+     $<BUILD_INTERFACE:${protobuf_source_dir}/src>
+@@ -18,9 +21,13 @@ foreach(_library
+     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${_library}
+     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${_library})
+ endforeach()
++unset(_library)
++unset(_libraries)
+ 
+-install(TARGETS protoc EXPORT protobuf-targets
+-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc)
++if(protobuf_BUILD_PROTOC)
++  install(TARGETS protoc EXPORT protobuf-targets
++    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc)
++endif()
+ 
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/protobuf.pc ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+ 
+@@ -101,10 +108,18 @@ configure_file(protobuf-options.cmake
+   ${CMAKE_INSTALL_CMAKEDIR}/protobuf-options.cmake @ONLY)
+ 
+ # Allows the build directory to be used as a find directory.
+-export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
++set(_targets libprotobuf-lite libprotobuf)
++if(TARGET libprotoc)
++  list(APPEND _targets libprotoc)
++endif()
++if(TARGET protoc)
++  list(APPEND _targets protoc)
++endif()
++export(TARGETS ${_targets}
+   NAMESPACE protobuf::
+   FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
+ )
++unset(_targets)
+ 
+ install(EXPORT protobuf-targets
+   DESTINATION "${CMAKE_INSTALL_CMAKEDIR}"
