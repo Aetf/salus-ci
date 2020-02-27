@@ -1,18 +1,21 @@
 language: python
+os: linux
 
 env:
   global:
     # for conan packages uploads
+    # CONAN_PASSWORD
+    - secure: 'MF2rxiu4mjEcrptTjSjPfWqyQRm+W1ckpgGZQZWoHHltcFIdYVG1TBryFf6mSgFGRFDrU2qYNbGWi6PRtx6B+K38Gedxoft+yXdN+oR9kvVHWePl00Cojeh372OCaEgeZnXQJafPV1c3w4N7S4fnSfv9bru5qQyEb7NhmOSPYH581yWyvm6u5Ho7dN6MAMqj66VORCkwwVVL/Qb6P+BjzJt9BKxPJPaOdFokYGYVOm9YkDLJ/tGmeFmTEkAbPBoHaUyHbh8YxGo6boYN+rVssBKcqix8WYQW8RNn+A+20CIYaXoOByFSgX1d1lOj+4sjUWJ6Q4ywJQm77hvVqPc7D4k+8cdsgasbGoOlDwpSdvlGWK8j+sOIgthlorFhBkjfxvSZ+6CXtTsCzXwE6h8Wcpvnq58rTzaoKl5XIJr+z66MZs4Evb+b/LdN7gf01LkmZ36g7SRruBMNw+KTTI08vxEKiDScm4IfVCJ4OEmHVG3g43nYc7CqQg6T1oebT2Dbrh3+5i7XuHwbxdxZan3JlShHU7yMFM+XpioNnIRSYR7Npr4PXRshPnpjBrFBNEgKNJl5jmJH0jvH5gZlnUEXyuEzvjFM0XQJS47l70q2ZfvQXi2K92HVwzW8xf3Yck0ZUbBjDM+vUJVvJOKjsG+3H+WnAmfxO6cmPHjzdFkD/Zg='
     - CONAN_USERNAME="symbioticlab"
     - CONAN_LOGIN_USERNAME="peifeng"
     - CONAN_CHANNEL="salus-conan"
-    - CONAN_UPLOAD="https://api.bintray.com/conan/symbioticlab/salus-conan" # ADJUST WITH YOUR REMOTE!
+    - CONAN_UPLOAD="https://api.bintray.com/conan/symbioticlab/salus-conan"
     - CONAN_STABLE_BRANCH_PATTERN="master"
     - CONAN_UPLOAD_ONLY_WHEN_STABLE="1"
-    - CONAN_BUILD_TYPE="Release"
-    - CONAN_ARCHS="x86_64"
     - CONAN_PIP_USE_SUDO="0"
     # for conan builder docker pushes
+    # DOCKER_PASSWORD
+    - secure: E02Tvxvg2t6wTD6w3N9G+p6jaqmHNRcqt/Qyt5r+o1O2UF6ABtPKzmYypTCAdx6NjRSMPqjhQ9QEwHq5X5U600ZZzTXbMSpyvU/bnY3biTyWvYoTnZU/O84nQ10QG6x1bLnUx9D3mqev7mFgRqFr+Uv5UHZPUJ7imyEJMQCYHUPAv5cvtE2+exYkzOdv/yV0BgmGF15QNw6PIa4j4LkQK5nmZGvZKByZ3j26pTwyI0HyZGXNX+pPXD5GPIWuiY38WjevlpZIom0NYHl/uUK+4Bkuns5WbFg+jDbjqmSXlGEayGPmT4VyjNF3tyjflPCyqI7a98Onhf9tQMS0wvBUlJpsVGfPYzWJubDke/dTToDtCaS++xz6mksqlFDHmx+pPs/4kGT+fzI7oCODt2v3VBDz1F8Ex68G0fGjarV8R3mHi02dn6b6C7PV8Rt0UGkXR2IG00HkN7lPuu7RDEPdiWWyXo0NNc6QRXLqpkLtXKAwsaibbpfd9yXoxdPT3WPPFJM+UoPpqjqPOW4775HZrbmo/HisyfBsUo2EqCRWmcpWWlNlBzL8KwQmdphe6n6p+2h1Lo4siVnxeLcEesfarTy75wpsPcHlPNt8bSfTsO0KttVwdWa7UGGJ8O9A2ltfEdhga08Tv9jk2+5uIGH/bRQpvwN8xFLdLnzHZ6bLCYE=
     - DOCKER_UPLOAD="1"
     - DOCKER_REGISTRY="registry.gitlab.com"
     - DOCKER_USERNAME="salus/salus/builder"
@@ -39,25 +42,75 @@ env:
 jobs:
    include:
       - <<: *pkg-linux
-        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc5-ppc64le
+        env:
+          - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc5-ppc64le
+          - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
+
       - <<: *pkg-linux
-        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc6-ppc64le
+        env:
+          - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc6-ppc64le
+          - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
+
       - <<: *pkg-linux
-        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc7-ppc64le
+        env:
+          - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc7-ppc64le
+          - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
+
       - <<: *pkg-linux
-        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc8-ppc64le
+        env:
+          - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc8-ppc64le
+          - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
+
       - <<: *pkg-linux
-        env: CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9-ppc64le
+        env:
+          - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9-ppc64le
+          - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
+
       - <<: *pkg-linux
-        env: CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
+        env:
+          - CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
       - <<: *pkg-linux
-        env: CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=conanio/gcc6
+        env:
+          - CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
+
       - <<: *pkg-linux
-        env: CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=conanio/gcc7
+        env:
+          - CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=conanio/gcc6
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
       - <<: *pkg-linux
-        env: CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=conanio/gcc8
+        env:
+          - CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=conanio/gcc6
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
+
       - <<: *pkg-linux
-        env: CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+        env:
+          - CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=conanio/gcc7
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
+      - <<: *pkg-linux
+        env:
+          - CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=conanio/gcc7
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
+
+      - <<: *pkg-linux
+        env:
+          - CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=conanio/gcc8
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
+      - <<: *pkg-linux
+        env:
+          - CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=conanio/gcc8
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
+
+      - <<: *pkg-linux
+        env:
+          - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
+      - <<: *pkg-linux
+        env:
+          - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+          - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
+
       - <<: *docker-linux
         env: GCC_VERSIONS=5 DOCKER_ARCHS=ppc64le
       - <<: *docker-linux
