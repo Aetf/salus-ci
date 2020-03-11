@@ -44,7 +44,7 @@ env:
 jobs:
   allow_failures:
     - <<: *docker-linux
-      name: Build conan package builder image for gcc5-ppc64le
+      name: Docker image for gcc5-ppc64le
       env: GCC_VERSIONS=5 DOCKER_ARCHS=ppc64le
     - <<: *pkg-linux
       name: Packaging for gcc5-ppc64le (1/2)
@@ -60,10 +60,10 @@ jobs:
 
   include:
     - <<: *docker-linux
-      name: Build conan package builder image for gcc5-ppc64le
+      name: Docker image for gcc5-ppc64le
       env: GCC_VERSIONS=5 DOCKER_ARCHS=ppc64le
     - <<: *docker-linux
-      name: Build conan package builder image for gcc9
+      name: Docker image for gcc9
       env: GCC_VERSIONS=9 DOCKER_ARCHS=x86_64
 
     - <<: *pkg-linux
