@@ -41,7 +41,7 @@ class ConanPackager(object):
                 builder.add_common_builds(reference=reference, pure_c=False)
             # we only want libstdc++11 ABI
             builder.remove_build_if(lambda build: '11' not in build.settings["compiler.libcxx"])
-            # builder.run()
+            builder.run()
 
 
 if __name__ == "__main__":
