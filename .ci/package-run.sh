@@ -10,8 +10,6 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     pyenv activate conan
 fi
 
-for pkg in conan/receipts/*; do
-    pushd $pkg
+pushd conan/recipes
     python build.py
-    popd
-done
+popd

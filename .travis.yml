@@ -44,64 +44,25 @@ jobs:
     - <<: *docker-linux
       name: Build conan package builder image for gcc5-ppc64le
       env: GCC_VERSIONS=5 DOCKER_ARCHS=ppc64le
-    - <<: *docker-linux
-      name: Build conan package builder image for gcc6-ppc64le
-      env: GCC_VERSIONS=6 DOCKER_ARCHS=ppc64le
-    - <<: *docker-linux
-      name: Build conan package builder image for gcc7-ppc64le
-      env: GCC_VERSIONS=7 DOCKER_ARCHS=ppc64le
-    - <<: *docker-linux
-      name: Build conan package builder image for gcc8-ppc64le
-      env: GCC_VERSIONS=8 DOCKER_ARCHS=ppc64le
-    - <<: *docker-linux
-      name: Build conan package builder image for gcc9-ppc64le
-      env: GCC_VERSIONS=9 DOCKER_ARCHS=ppc64le
   include:
     - <<: *docker-linux
       name: Build conan package builder image for gcc5-ppc64le
       env: GCC_VERSIONS=5 DOCKER_ARCHS=ppc64le
     - <<: *docker-linux
-      name: Build conan package builder image for gcc6-ppc64le
-      env: GCC_VERSIONS=6 DOCKER_ARCHS=ppc64le
-    - <<: *docker-linux
-      name: Build conan package builder image for gcc7-ppc64le
-      env: GCC_VERSIONS=7 DOCKER_ARCHS=ppc64le
-    - <<: *docker-linux
-      name: Build conan package builder image for gcc8-ppc64le
-      env: GCC_VERSIONS=8 DOCKER_ARCHS=ppc64le
-    - <<: *docker-linux
-      name: Build conan package builder image for gcc9-ppc64le
-      env: GCC_VERSIONS=9 DOCKER_ARCHS=ppc64le
+      name: Build conan package builder image for gcc9
+      env: GCC_VERSIONS=9 DOCKER_ARCHS=x86_64
 
     - <<: *pkg-linux
-      name: Packaging for gcc5-ppc64le (1/1)
+      name: Packaging for gcc5-ppc64le (1/2)
       env:
         - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc5-ppc64le
-        - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
+        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
 
     - <<: *pkg-linux
-      name: Packaging for gcc6-ppc64le (1/1)
+      name: Packaging for gcc5-ppc64le (2/2)
       env:
-        - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc6-ppc64le
-        - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
-
-    - <<: *pkg-linux
-      name: Packaging for gcc7-ppc64le (1/1)
-      env:
-        - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc7-ppc64le
-        - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
-
-    - <<: *pkg-linux
-      name: Packaging for gcc8-ppc64le (1/1)
-      env:
-        - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc8-ppc64le
-        - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
-
-    - <<: *pkg-linux
-      name: Packaging for gcc9-ppc64le (1/1)
-      env:
-        - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9-ppc64le
-        - CONAN_TOTAL_PAGES=1 CONAN_CURRENT_PAGE=1
+        - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc5-ppc64le
+        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
 
     - <<: *pkg-linux
       name: Packaging for gcc5 (1/2)
@@ -115,47 +76,14 @@ jobs:
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
 
     - <<: *pkg-linux
-      name: Packaging for gcc6 (1/2)
-      env:
-        - CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=conanio/gcc6
-        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
-    - <<: *pkg-linux
-      name: Packaging for gcc6 (2/2)
-      env:
-        - CONAN_GCC_VERSIONS=6 CONAN_DOCKER_IMAGE=conanio/gcc6
-        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
-
-    - <<: *pkg-linux
-      name: Packaging for gcc7 (1/2)
-      env:
-        - CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=conanio/gcc7
-        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
-    - <<: *pkg-linux
-      name: Packaging for gcc7 (2/2)
-      env:
-        - CONAN_GCC_VERSIONS=7 CONAN_DOCKER_IMAGE=conanio/gcc7
-        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
-
-    - <<: *pkg-linux
-      name: Packaging for gcc8 (1/2)
-      env:
-        - CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=conanio/gcc8
-        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
-    - <<: *pkg-linux
-      name: Packaging for gcc8 (2/2)
-      env:
-        - CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=conanio/gcc8
-        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
-
-    - <<: *pkg-linux
       name: Packaging for gcc9 (1/2)
       env:
-        - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+        - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
     - <<: *pkg-linux
       name: Packaging for gcc9 (2/2)
       env:
-        - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=conanio/gcc9
+        - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
 
 install:

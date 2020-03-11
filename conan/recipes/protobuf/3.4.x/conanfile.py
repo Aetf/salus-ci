@@ -12,12 +12,11 @@ class ProtobufConan(ConanFile):
     homepage = "https://github.com/protocolbuffers/protobuf"
     license = "BSD-3-Clause"
     exports_sources = ["CMakeLists.txt", "patches/protoc-option.patch"]
-    generators = 'cmake'
+    generators = "cmake"
     short_paths = True
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "with_zlib": [True, False], "fPIC": [True, False], "protoc": [True, False]}
     default_options = {"with_zlib": False, "shared": False, "fPIC": True, "protoc": True}
-    version = "3.4.1"
 
     @property
     def _source_subfolder(self):
@@ -32,7 +31,7 @@ class ProtobufConan(ConanFile):
         return self.settings.compiler == "clang" and self.settings.arch == "x86"
 
     def source(self):
-        tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
+        tools.get(**self.conan_data["sources"][self.version])
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
         tools.patch(base_path=self._source_subfolder, patch_file="patches/protoc-option.patch")
@@ -50,7 +49,7 @@ class ProtobufConan(ConanFile):
 
     def requirements(self):
         if self.options.with_zlib:
-            self.requires("zlib/1.2.11")
+            self.requires("zlib/1.2.11@symbioticlab/stable")
 
     def _configure_cmake(self):
         cmake = CMake(self)

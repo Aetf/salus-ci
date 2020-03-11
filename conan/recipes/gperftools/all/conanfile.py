@@ -4,7 +4,6 @@ from conans import ConanFile, AutoToolsBuildEnvironment, tools
 
 class GperftoolsConan(ConanFile):
     name = "gperftools"
-    version = "2.7"
     license = "BSD-3-Clause"
     url = "https://github.com/Aetf/salus-ci"
     homepage = "https://github.com/gperftools/gperftools"
@@ -20,9 +19,7 @@ class GperftoolsConan(ConanFile):
         return "source_subfolder"
 
     def source(self):
-        tools.get("{url}/releases/download/{name}-{version}/{name}-{version}.tar.gz".format(url=self.homepage,
-                                                                                            name=self.name,
-                                                                                            version=self.version))
+        tools.get(**self.conan_data["sources"][self.version])
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
 
