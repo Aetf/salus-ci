@@ -8,7 +8,7 @@ env:
     - secure: 'hZ9xupzVDPY+ZvdLQihz4kITavWD5yl5q8F2RoR2zlYRwoF0yzABM1LDe+PISQthcqhLr0gTMDCZyauXjV5yNB6jc2fsxWcaW76sS72M6TJsc8D25gLxO2iTW0HE5eZTGb9CyM7mnPjGcBpuf/1HaOublaRv5+HMuwUqeCTeXhIv7NoAXZrUPE9eSy2yIe9Nk9P66bloa2L1WCE9PzFpT/ssipbxlSUVX76a1gdtAqSscGzX5pLNavq56TlMNwz+r+gfnxMjTkMhRswMDEdA5B7VZBYa0RBtemwL3wTB4wA/lyppjVWo9Rys2yXLZbohwvU73dJTJXpml0wG1CLIcxvKMjyh7htEyWMClz6/w/qG45qhCC5HUCnmG+xJQk3k93XxAMxGTuSSBJBnTiNr0EA6QSd/bUyFwVdDd8JLqGPeaGIIfA1kZaDeB6ub/7J+YToZvM8MCwHL2jpStC9ZWBzm4woEXYXVUT63jI9jRiv/h94IjdLx3UWtwKP8wZQRRY0i6Y6faZoLbAd0pB8FIKo6ut7aLWKUQrUrBfoa/S0Vq5RSnNc+AhhulkOPJrf33b8b5OkLKe+iLNy+b7ygta2IZgnW/T0Ya82f5oD2R91WFUdR01mewmGqHZYZDXRsm3vUUcJT4giIk1IAZ9dfP6ZZJbjyRfnrrSes9CnM25g='
     - CONAN_USERNAME="symbioticlab"
     - CONAN_LOGIN_USERNAME="peifeng"
-    - CONAN_CHANNEL="salus-conan"
+    - CONAN_CHANNEL="stable"
     - CONAN_UPLOAD="https://api.bintray.com/conan/symbioticlab/salus-conan"
     - CONAN_STABLE_BRANCH_PATTERN="master"
     - CONAN_UPLOAD_ONLY_WHEN_STABLE="1"
@@ -67,23 +67,23 @@ jobs:
     - <<: *pkg-linux
       name: Packaging for gcc5 (1/2)
       env:
-        - CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
+        - CONAN_ARCHS=x86_64 CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
     - <<: *pkg-linux
       name: Packaging for gcc5 (2/2)
       env:
-        - CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
+        - CONAN_ARCHS=x86_64 CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
 
     - <<: *pkg-linux
       name: Packaging for gcc9 (1/2)
       env:
-        - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9
+        - CONAN_ARCHS=x86_64 CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
     - <<: *pkg-linux
       name: Packaging for gcc9 (2/2)
       env:
-        - CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9
+        - CONAN_ARCHS=x86_64 CONAN_GCC_VERSIONS=9 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc9
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
 
 install:

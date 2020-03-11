@@ -33,7 +33,7 @@ class ConanPackager(object):
     def build_single_recipe(self, recipe):
         versions_by_folder = self._detect_versions(recipe)
         for folder, versions in versions_by_folder.items():
-            conanfile = recipe / folder / 'conanfile.py'
+            conanfile = str(recipe / folder / 'conanfile.py')
             builder = ConanMultiPackager(conanfile=conanfile)
             for version in versions:
                 reference = '{}/{}'.format(recipe.name, version)
