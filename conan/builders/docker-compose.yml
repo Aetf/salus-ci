@@ -54,3 +54,13 @@ services:
         image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9-ppc64le:${DOCKER_BUILD_TAG}"
         container_name: gcc9-ppc64le
         tty: true
+    gcc9:
+        build:
+            context: gcc_9
+            dockerfile: Dockerfile
+            cache_from:
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9:${DOCKER_BUILD_TAG}"
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9"
+        image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9:${DOCKER_BUILD_TAG}"
+        container_name: gcc9
+        tty: true
