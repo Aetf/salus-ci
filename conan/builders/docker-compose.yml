@@ -64,3 +64,13 @@ services:
         image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc9:${DOCKER_BUILD_TAG}"
         container_name: gcc9
         tty: true
+    gcc8:
+        build:
+            context: gcc_8
+            dockerfile: Dockerfile
+            cache_from:
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc8:${DOCKER_BUILD_TAG}"
+                - "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc8"
+        image: "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/gcc8:${DOCKER_BUILD_TAG}"
+        container_name: gcc8
+        tty: true

@@ -65,6 +65,9 @@ jobs:
     - <<: *docker-linux
       name: Docker image for gcc9
       env: GCC_VERSIONS=9 DOCKER_ARCHS=x86_64
+    - <<: *docker-linux
+      name: Docker image for gcc8
+      env: GCC_VERSIONS=8 DOCKER_ARCHS=x86_64
 
     - <<: *pkg-linux
       name: Packaging for gcc5-ppc64le (1/2)
@@ -87,6 +90,17 @@ jobs:
       name: Packaging for gcc5 (2/2)
       env:
         - CONAN_ARCHS=x86_64 CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=conanio/gcc5
+        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
+
+    - <<: *pkg-linux
+      name: Packaging for gcc8 (1/2)
+      env:
+        - CONAN_ARCHS=x86_64 CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc8
+        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
+    - <<: *pkg-linux
+      name: Packaging for gcc8 (2/2)
+      env:
+        - CONAN_ARCHS=x86_64 CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc8
         - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
 
     - <<: *pkg-linux
