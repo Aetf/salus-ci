@@ -53,7 +53,7 @@ class BoostConan(ConanFile):
         "lzma": [True, False],
         "zstd": [True, False],
         "segmented_stacks": [True, False],
-        "debug_level": [i for i in range(1, 14)],
+        "debug_level": [i for i in range(0, 14)],
         "pch": [True, False],
         "extra_b2_flags": "ANY"  # custom b2 flags
     }
@@ -78,7 +78,7 @@ class BoostConan(ConanFile):
         'lzma': False,
         'zstd': False,
         'segmented_stacks': False,
-        "debug_level": 2,
+        "debug_level": 0,
         'pch': True,
         'extra_b2_flags': 'None',
     }
@@ -406,7 +406,6 @@ class BoostConan(ConanFile):
         # JOIN ALL FLAGS
         b2_flags = " ".join(self._build_flags)
         full_command = "%s %s" % (self._b2_exe, b2_flags)
-        # -d2 is to print more debug info and avoid travis timing out without output
         sources = os.path.join(self.source_folder, self._boost_dir)
         full_command += ' --debug-configuration --build-dir="%s"' % self.build_folder
         self.output.warn(full_command)
