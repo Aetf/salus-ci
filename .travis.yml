@@ -46,6 +46,18 @@ jobs:
     - <<: *docker-linux
       name: Build conan package builder image for gcc5-ppc64le
       env: GCC_VERSIONS=5 DOCKER_ARCHS=ppc64le
+    - <<: *pkg-linux
+      name: Packaging for gcc5-ppc64le (1/2)
+      env:
+        - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc5-ppc64le
+        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=1
+
+    - <<: *pkg-linux
+      name: Packaging for gcc5-ppc64le (2/2)
+      env:
+        - CONAN_ARCHS=ppc64le CONAN_GCC_VERSIONS=5 CONAN_DOCKER_IMAGE=registry.gitlab.com/salus/salus/builder/gcc5-ppc64le
+        - CONAN_TOTAL_PAGES=2 CONAN_CURRENT_PAGE=2
+
   include:
     - <<: *docker-linux
       name: Build conan package builder image for gcc5-ppc64le
